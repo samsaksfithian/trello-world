@@ -1,20 +1,25 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import AddCardForm from '../components/AddCardForm'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addCard } from '../actions';
+import Card from '../components/Card';
+import AddCardForm from '../components/AddCardForm';
 
 class Board extends React.Component {
   static propTypes = {
     index: PropTypes.number,
     name: PropTypes.string,
-  }
+    cards: PropTypes.arrayOf(PropTypes.object).isRequired,
+    addCard: PropTypes.func,
+  };
 
   handleDrop = e => {
-    e.preventDefault()
-    console.log('dropping...')
-  }
+    e.preventDefault();
+    console.log('dropping...');
+  };
 
   render() {
-    const { index, name } = this.props
+    const { index, name, cards, addCard } = this.props;
     return (
       <div
         className="board"
@@ -30,11 +35,27 @@ class Board extends React.Component {
         onDrop={this.handleDrop}
       >
         <h2 style={{ margin: '0', marginBottom: '1rem' }}>{name}</h2>
-
-        <AddCardForm boardIndex={index} />
+        {cards.map((card, i) => (
+          <Card key={i} card={card} />
+        ))}
+        <AddCardForm boardIndex={index} addCard={addCard} />
       </div>
-    )
+    );
   }
 }
 
-export default Board
+// state is application state, not component state
+// ownProps are the props passed into the compenent used to make the higher order component
+const mapStateToProps = (state, ownProps) => ({
+  cards: state.cards.filter(card => card.board === ownProps.index),
+});
+
+const mapDispatchToProps = dispatch => ({
+  addCard: (text, boardIndex) => dispatch(addCard(text, boardIndex)),
+});
+
+// connect returns a function, then call that on the thing we want to be a connected component
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Board);

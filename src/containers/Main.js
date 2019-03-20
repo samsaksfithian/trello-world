@@ -1,7 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Board from './Board'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Board from './Board';
 
+// inline destructuring: ({ boards }) ==> boards = props.boards
 const Main = ({ boards }) => (
   <div
     style={{
@@ -13,10 +15,18 @@ const Main = ({ boards }) => (
       <Board key={i} index={i} name={board} />
     ))}
   </div>
-)
+);
 
 Main.propTypes = {
   boards: PropTypes.arrayOf(PropTypes.string),
-}
+};
 
-export default Main
+// state is application state, not component state
+const mapStateToProps = state => ({
+  boards: state.boards,
+});
+
+// connect returns a function, then call that on the thing we want to be a connected component
+const ConnectedMain = connect(mapStateToProps)(Main);
+
+export default ConnectedMain;
