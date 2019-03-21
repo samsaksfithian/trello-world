@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const Card = ({ card }) => (
+const Card = ({ card, removeCard }) => (
   <div
     style={{
       margin: '10px 0px',
@@ -21,15 +21,16 @@ const Card = ({ card }) => (
         fontSize: '1rem',
         cursor: 'pointer',
       }}
-      onClick={() => console.log('clicking...')}
+      onClick={() => removeCard(card.id)}
     >
       &times;
     </button>
   </div>
-)
+);
 
 Card.propTypes = {
-  card: PropTypes.object,
-}
+  card: PropTypes.object.isRequired,
+  removeCard: PropTypes.func.isRequired,
+};
 
-export default Card
+export default Card;

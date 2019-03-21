@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class AddCardForm extends Component {
+export default class AddBoardForm extends Component {
   static propTypes = {
-    boardIndex: PropTypes.number.isRequired,
-    addCard: PropTypes.func.isRequired,
+    addBoard: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -17,13 +16,16 @@ export default class AddCardForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
     // dispatch an addCard
-    this.props.addCard(this.state.inputValue, this.props.boardIndex);
+    this.props.addBoard(this.state.inputValue);
     this.setState({ inputValue: '' });
   };
 
   render() {
     return (
-      <form style={{ display: 'flex' }} onSubmit={this.handleSubmit}>
+      <form
+        style={{ display: 'flex', width: '50%', margin: '0px 15px' }}
+        onSubmit={this.handleSubmit}
+      >
         <input
           type="text"
           style={{
@@ -33,8 +35,8 @@ export default class AddCardForm extends Component {
             padding: '0.4rem 0.65rem',
             borderRadius: '5px 0px 0px 5px',
           }}
-          placeholder="Add a card"
           value={this.state.inputValue}
+          placeholder="Add a board"
           onChange={e => this.setState({ inputValue: e.target.value })}
         />
         <button
